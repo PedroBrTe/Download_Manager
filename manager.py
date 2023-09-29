@@ -58,7 +58,11 @@ class Main:
     @staticmethod
     def get_info(url):
         req_headers = requests.head(url).headers
-        file_name = url.split('/')[-1]
+        cd = req_headers.get("content-disposition")
+        if cd:
+            file_name = cd.split('filename=')[-1]
+        else:
+            file_name = url.split('/')[-1]
         size = req_headers.get('content-length')
 
         return file_name, size
